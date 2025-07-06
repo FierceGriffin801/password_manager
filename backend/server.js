@@ -13,9 +13,18 @@ if (!process.env.JWT_SECRET) {
 const app = express();
 
 // Middleware
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Allow only your Vercel frontend domain
+const allowedOrigins = [
+  'https://password-manager-gray-eight.vercel.app'
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true, // if you use cookies or authentication headers
+}));
 
 // Database connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://adityasrivastava9march:Aditya%23123@password-manager.fcnunu6.mongodb.net/?retryWrites=true&w=majority&appName=password-manager';
