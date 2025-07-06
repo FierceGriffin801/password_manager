@@ -1,4 +1,5 @@
 require('dotenv').config();
+console.log('Loaded environment variables:', process.env);
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -48,8 +49,6 @@ app.use('*', (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-
-console.log('Loaded environment variables:', process.env);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
