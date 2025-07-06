@@ -4,5 +4,8 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.0",
     "@mui/material": "^5.15.0"
+  },
+  "scripts": {
+    "start": "node backend/server.js"
   }
 }
