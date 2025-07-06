@@ -13,9 +13,6 @@ export interface Password {
   username: string;
   password: string;
   decryptedPassword?: string;
-  notes: string;
-  category: string;
-  url: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -41,18 +38,12 @@ export interface CreatePasswordData {
   site: string;
   username: string;
   password: string;
-  notes?: string;
-  category?: string;
-  url?: string;
 }
 
 export interface UpdatePasswordData {
   site?: string;
   username?: string;
   password?: string;
-  notes?: string;
-  category?: string;
-  url?: string;
 }
 
 export interface ApiError {

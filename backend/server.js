@@ -1,10 +1,13 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const dotenv = require('dotenv');
 
-// Load environment variables
-dotenv.config();
+// Check for required environment variables
+if (!process.env.JWT_SECRET) {
+  console.warn('Warning: JWT_SECRET not set. Using fallback key.');
+}
 
 const app = express();
 
@@ -14,9 +17,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Database connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/password_manager')
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/password_manager';
+
+mongoose.connect(MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+    console.error('Please make sure MongoDB is running on your system.');
+    process.exit(1);
+  });
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
@@ -42,4 +51,5 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  console.log(`API available at http://localhost:${PORT}/api`);
 }); 

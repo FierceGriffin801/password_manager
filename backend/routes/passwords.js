@@ -14,14 +14,15 @@ router.use(auth);
 router.get('/', async (req, res) => {
   try {
     const passwords = await Password.find({ user: req.user._id })
-      .select('-password') // Don't send encrypted password
+      // .select('-password') // Don't send encrypted password (commented out for decryption)
       .sort({ createdAt: -1 });
 
     // Decrypt passwords for response
-    const decryptedPasswords = passwords.map(pwd => ({
-      ...pwd.toObject(),
-      decryptedPassword: pwd.decryptPassword()
-    }));
+    const decryptedPasswords = passwords.map(pwd => {
+      const decryptedPassword = pwd.decryptPassword();
+      const obj = pwd.toObject();
+      return { ...obj, decryptedPassword };
+    });
 
     res.json(decryptedPasswords);
   } catch (error) {
@@ -46,20 +47,7 @@ router.post('/', [
     .escape(),
   body('password')
     .notEmpty()
-    .withMessage('Password is required'),
-  body('notes')
-    .optional()
-    .trim()
-    .escape(),
-  body('category')
-    .optional()
-    .trim()
-    .escape(),
-  body('url')
-    .optional()
-    .isURL()
-    .withMessage('Please enter a valid URL')
-    .trim()
+    .withMessage('Password is required')
 ], async (req, res) => {
   try {
     // Check for validation errors
@@ -71,25 +59,20 @@ router.post('/', [
       });
     }
 
-    const { site, username, password, notes, category, url } = req.body;
+    const { site, username, password } = req.body;
 
     const newPassword = new Password({
       user: req.user._id,
       site,
       username,
-      password,
-      notes: notes || '',
-      category: category || 'General',
-      url: url || ''
+      password
     });
 
     await newPassword.save();
 
     // Return the created password with decrypted password
-    const createdPassword = {
-      ...newPassword.toObject(),
-      decryptedPassword: newPassword.decryptPassword()
-    };
+    const decryptedPassword = newPassword.decryptPassword();
+    const createdPassword = { ...newPassword.toObject(), decryptedPassword };
 
     res.status(201).json(createdPassword);
   } catch (error) {
@@ -117,20 +100,7 @@ router.put('/:id', [
   body('password')
     .optional()
     .notEmpty()
-    .withMessage('Password cannot be empty'),
-  body('notes')
-    .optional()
-    .trim()
-    .escape(),
-  body('category')
-    .optional()
-    .trim()
-    .escape(),
-  body('url')
-    .optional()
-    .isURL()
-    .withMessage('Please enter a valid URL')
-    .trim()
+    .withMessage('Password cannot be empty')
 ], async (req, res) => {
   try {
     // Check for validation errors
@@ -166,10 +136,8 @@ router.put('/:id', [
     await password.save();
 
     // Return updated password with decrypted password
-    const updatedPassword = {
-      ...password.toObject(),
-      decryptedPassword: password.decryptPassword()
-    };
+    const decryptedPassword = password.decryptPassword();
+    const updatedPassword = { ...password.toObject(), decryptedPassword };
 
     res.json(updatedPassword);
   } catch (error) {
@@ -218,10 +186,8 @@ router.get('/:id', async (req, res) => {
     }
 
     // Return password with decrypted password
-    const passwordWithDecrypted = {
-      ...password.toObject(),
-      decryptedPassword: password.decryptPassword()
-    };
+    const decryptedPassword = password.decryptPassword();
+    const passwordWithDecrypted = { ...password.toObject(), decryptedPassword };
 
     res.json(passwordWithDecrypted);
   } catch (error) {
