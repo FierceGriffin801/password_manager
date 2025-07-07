@@ -12,8 +12,9 @@ if (!process.env.JWT_SECRET) {
 
 const app = express();
 
-// Allow only your Vercel frontend domain
+// Allow both Vercel frontend domains
 const allowedOrigins = [
+  'https://password-manager-gray-eight.vercel.app',
   'https://password-manager-cotovqbqcr-adityas-projects-8a1d552c.vercel.app'
 ];
 
