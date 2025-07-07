@@ -14,7 +14,7 @@ const app = express();
 
 // Allow only your Vercel frontend domain
 const allowedOrigins = [
-  'https://password-manager-gray-eight.vercel.app'
+  'https://password-manager-cotovqbqcr-adityas-projects-8a1d552c.vercel.app'
 ];
 
 app.use(cors({
