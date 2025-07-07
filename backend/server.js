@@ -41,7 +41,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Database connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://adityasrivastava9march:Aditya%23123@password-manager.fcnunu6.mongodb.net/?retryWrites=true&w=majority&appName=password-manager';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://adityasrivastava9march:Aditya%23123@password-manager.fcnunu6.mongodb.net/test?retryWrites=true&w=majority&appName=password-manager';
 
 mongoose.connect(MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
