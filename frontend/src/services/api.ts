@@ -30,17 +30,17 @@ api.interceptors.request.use((config) => {
 // Auth API
 export const authAPI = {
   signup: async (credentials: SignupCredentials): Promise<AuthResponse> => {
-    const response = await api.post('/auth/signup', credentials);
+    const response = await api.post('/api/auth/signup', credentials);
     return response.data;
   },
 
   login: async (credentials: LoginCredentials): Promise<AuthResponse> => {
-    const response = await api.post('/auth/login', credentials);
+    const response = await api.post('/api/auth/login', credentials);
     return response.data;
   },
 
   getCurrentUser: async (): Promise<{ user: User }> => {
-    const response = await api.get('/auth/me');
+    const response = await api.get('/api/auth/me');
     return response.data;
   },
 };
@@ -48,27 +48,27 @@ export const authAPI = {
 // Passwords API
 export const passwordsAPI = {
   getAll: async (): Promise<Password[]> => {
-    const response = await api.get('/passwords');
+    const response = await api.get('/api/passwords');
     return response.data;
   },
 
   getById: async (id: string): Promise<Password> => {
-    const response = await api.get(`/passwords/${id}`);
+    const response = await api.get(`/api/passwords/${id}`);
     return response.data;
   },
 
   create: async (data: CreatePasswordData): Promise<Password> => {
-    const response = await api.post('/passwords', data);
+    const response = await api.post('/api/passwords', data);
     return response.data;
   },
 
   update: async (id: string, data: UpdatePasswordData): Promise<Password> => {
-    const response = await api.put(`/passwords/${id}`, data);
+    const response = await api.put(`/api/passwords/${id}`, data);
     return response.data;
   },
 
   delete: async (id: string): Promise<{ message: string }> => {
-    const response = await api.delete(`/passwords/${id}`);
+    const response = await api.delete(`/api/passwords/${id}`);
     return response.data;
   },
 };
